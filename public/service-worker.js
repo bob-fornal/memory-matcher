@@ -1,10 +1,14 @@
 // In your service worker
 importScripts('cache.adderall.js');
 
-const cachename = 'v19';
+const cachename = 'v1';
 
 const STATIC_ASSETS = [
   '/',
+  '/game',
+  '/notes',
+  '/patreon',
+  
   '404.html',
   'cache.adderall.js',
   'cache.adderall.js.map',
@@ -19,10 +23,13 @@ const STATIC_ASSETS = [
   'images/icons/icon-512x512.png'
 ];
 const MUTABLE_ASSETS = [
+  'game.html',
+  'game.js',
   'index.html',
   'notes.html',
   'patreon.html',
   'service-worker.js',
+  'state.js',
   'storage.js',
   'styles.css'
 ];

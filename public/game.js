@@ -2,10 +2,15 @@
 const game = {
   active: '~~ACTIVE~~',
   unflipTime: 1500,
+  activeSelect: '',
 
   elements: {
     cards: null,
     gameArea: null,
+    complete: null,
+    score: null,
+    position: null,
+
     colors: [
       { back: 'lightgreen', fore: 'blue' },
       { back: 'gold', fore: 'maroon' },
@@ -18,11 +23,21 @@ const game = {
   },
 
   init: () => {
-    game.elements.gameArea = document.getElementById('game-area');
+    game.deck.cards = [];
+    game.deck.patterns = [];
 
+    game.elements.gameArea = document.getElementById('game-area');
+    game.elements.complete = document.getElementById('complete-wrapper');
+    game.elements.score = document.getElementById('score');
+    game.elements.position = document.getElementById('position');
+
+    game.elements.gameArea.innerHTML = '';
+    game.clicks.total = 0;
+    game.clicks.count = 0;
     game.clicks.removeClicks();
     
     const active = storage.getItem(game.active);
+    game.activeSelect = active;
     game.deck.triggers[active]();
 
     game.deck.generate();
@@ -31,6 +46,7 @@ const game = {
   },
 
   check: {
+    isComplete: false,
     match: () => {
       const allFlipped = document.getElementsByClassName('card is-flipped');
       const active = Array.prototype.filter.call(allFlipped, (element) => {
@@ -47,6 +63,7 @@ const game = {
           active[0].classList.add('FOUND');
           active[1].classList.add('FOUND');
         });
+        game.check.complete(allFlipped);
       } else {
         setTimeout(() => {
           game.clicks.count = 0;
@@ -54,6 +71,61 @@ const game = {
           active[1].classList.remove('is-flipped');  
         }, game.unflipTime);
       }
+    },
+    complete: (allFlipped) => {
+      game.check.isComplete = (allFlipped.length === game.deck.cards.length);
+      if (game.check.isComplete) {
+        game.elements.score.innerText = game.clicks.total;
+        const position = game.check.highScore(game.clicks.total);
+        if (position <= 10) {
+          game.elements.position.innerText = `${ game.check.wording[position] } Place!`;
+        } else {
+          game.elements.position.innerText = `Not a Top Ten Score.`;
+        }
+        setTimeout(() => {
+          game.elements.complete.classList.remove('hidden');
+        }, game.unflipTime);
+      }
+    },
+    wording: {
+      '1': 'First',
+      '2': 'Second',
+      '3': 'Third',
+      '4': 'Fourth',
+      '5': 'Fifth',
+      '6': 'Sixth',
+      '7': 'Seventh',
+      '8': 'Eighth',
+      '9': 'Ninth',
+      '10': 'Tenth',
+    },
+    highScore: (score) => {
+      let scores = storage.getItem(game.activeSelect) || [];
+      let insertAt = -1;
+      for (let i = 0, len = scores.length; i < len; i++) {
+        console.log({ here: scores[i], score });
+        if (scores[i] > score) {
+          insertAt = i;
+          break;
+        }
+      }
+      if (insertAt === -1) {
+        insertAt = scores.length;
+        scores.push(score);
+      } else {
+        scores.splice(insertAt, 0, score);
+      }
+      const finalScores = scores.slice(0, 10);
+      storage.setItem(game.activeSelect, finalScores);
+      return (insertAt + 1);
+    },
+
+    restart: () => {
+      game.elements.complete.classList.add('hidden');
+      game.init();
+    },
+    back: () => {
+      window.location.href = '/';
     }
   },
 
@@ -158,6 +230,7 @@ const game = {
 
   clicks: {
     count: 0,
+    total: 0,
     handleClicks: (event) => {
       if (game.clicks.count === 2) {
         return;
@@ -170,6 +243,7 @@ const game = {
 
       card.classList.toggle('is-flipped');
       game.clicks.count = game.clicks.count + ((card.classList.value === 'card') ? -1 : 1);
+      game.clicks.total = game.clicks.total + 1;
       if (game.clicks.count === 2) {
         game.check.match();
       }

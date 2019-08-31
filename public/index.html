@@ -43,6 +43,11 @@
       margin-bottom: 0.5rem;
       text-align: center;
     }
+
+    .score {
+      text-align: center;
+      font-family: Arial;
+    }
   </style>
 </head>
 <body>
@@ -110,9 +115,8 @@
       }
     });
 
-    console.log(games);
     const gamesElement = document.getElementById('games');
-    for (let i = 0, len = games.length; i < len; i++) {
+    for (let i = 0, i_len = games.length; i < i_len; i++) {
       const button = document.createElement('div');
       button.setAttribute('class', 'category btn default');
       button.setAttribute('data-trigger', games[i].trigger);
@@ -120,6 +124,18 @@
       button.innerText = games[i].title;
 
       gamesElement.appendChild(button);
+
+      let allScoresElement = document.createElement('div');
+      allScoresElement.setAttribute('class', 'scores');
+      const scores = storage.getItem(games[i].trigger) || [];
+      for (let j = 0, j_len = scores.length; j < j_len; j++) {
+        let scoreElement = document.createElement('div');
+        scoreElement.setAttribute('class', 'score');
+        scoreElement.innerText = `${ game.check.wording[j + 1] } Place: ${ scores[j] } Clicks`;
+
+        allScoresElement.appendChild(scoreElement);
+      }
+      gamesElement.appendChild(allScoresElement);
     }
 
     function triggerGame(event) {
@@ -145,5 +161,13 @@
     }
   </script>
 
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/6.5.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#reserved-urls -->
+
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
 </body>
 </html>

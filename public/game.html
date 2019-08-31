@@ -95,6 +95,60 @@
       margin-top: calc(calc(var(--card-height) - var(--card-width)) / 2);
       width: calc(calc(var(--card-width) - calc(2 * var(--border-gap))) - 10px);
     }
+
+    .complete-wrapper {
+      z-index: 1000;
+      position: fixed;
+
+      left: 0;
+      height: 100vh;
+      top: 0;
+      width: 100vw;
+    }
+    .complete {
+      background-color: rgba(255, 215, 0, 1);
+      border: 2px solid darkgray;
+      border-radius: 10px;
+      box-sizing: border-box;
+      color: darkgreen;
+
+      padding: 2rem;
+      margin: 0 5vw;
+      margin-top: calc(4rem + 5vh);
+      width: 90vw;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .complete .header {
+      font-weight: bold;
+      font-family: Arial;
+      font-size: 3rem;
+      text-align: center;
+    }
+    .complete .score,
+    .complete .position {
+      font-family: Arial;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    .complete .btn {
+      display: inline-block;
+      text-align: center;
+      width: calc(50% - 3rem);
+    }
+    .complete .nav .btn:first-of-type {
+      margin-right: 1rem;
+    }
+
+    .complete-wrapper {
+      background-color: rgba(192, 192, 192, 0.85);
+    }
+    .complete-wrapper .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -401,6 +455,21 @@
   </svg>
 
   <div id="game-area" class="game-area"></div>
+
+  <div id="complete-wrapper" class="complete-wrapper hidden">
+    <div class="complete">
+      <div class="header">Winner ...</div>
+      <div class="score">
+        <span>Number of Clicks: </span>
+        <span id="score"></span>
+      </div>
+      <div id="position" class="position"></div>
+      <div class="nav">
+        <div class="btn default" onclick="game.check.restart()">Restart</div>
+        <div class="btn default" onclick="game.check.back()">Back</div>  
+      </div>
+    </div>  
+  </div>
 
   <script src="./game.js"></script>
   <script src="./storage.js"></script>
