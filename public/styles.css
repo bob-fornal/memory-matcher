@@ -1,0 +1,278 @@
+body {
+  margin: 0;
+}
+@media screen
+  and (min-device-width: 768px) {
+    .parent-wrapper {
+      height: 100vh;
+      margin: 0 auto;
+      position: relative;
+      width: 768px;
+    }
+    header {
+      position: absolute;
+    }
+}
+@media screen
+  and (max-device-width: 767px) {
+    .parent-wrapper {
+      height: 100%;
+      left: 0;
+      overflow: auto;
+      position: fixed;
+      top: 0;
+      width: 100vw;
+    }
+    header {
+      position: fixed;
+    }
+}
+
+header {
+  background-color: blue;
+  box-sizing: border-box;
+  color: white;
+  font-family: Arial;
+  font-size: 1rem;      
+  font-weight: bold;
+  line-height: 1rem;
+  padding: 1rem 0.5rem;
+  text-align: center;
+
+  height: 4rem;
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.content {
+  padding-top: 5rem;
+}
+
+.navigation {
+  position: absolute;
+  top: 2rem;
+}
+.choice {
+  margin-top: 2rem;
+}
+.center {
+  text-align: center;
+}
+
+.fixed-half {
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: center;
+  width: 49%;
+}
+.fixed-half:not(:first-of-type) {
+  padding-right: 1rem;
+}
+.fixed-half:not(:last-of-type) {
+  padding-left: 1rem;
+}  
+
+@media screen and (orientation: portrait) {
+  .half {
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .left {
+    box-sizing: border-box;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 40%;
+  }
+  .right {
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 40%;
+  }
+}
+@media screen and (orientation: landscape) {
+  .half, .left, .right {
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
+
+.btn {
+  border: 2px solid gray;
+  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 1rem;
+  position: relative;
+}
+.btn.default {
+  font-family: Arial;
+  font-weight: bold;
+  text-decoration: none;
+}
+.btn.default:not(.highlight) {
+  background-color: #d3d3d3;
+  color: black;
+}
+.btn.default.highlight {
+  background-color: #00aa00;
+  color: white;
+}
+.btn.default .capital {
+  color: blue;
+  padding-left: 1em;  
+}
+.btn .found {
+  color: purple;
+  font-size: 2rem;
+  position: absolute;
+  right: 3rem;
+  top: 1rem;
+}
+.btn.default .add {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.65rem;
+}
+.btn.default .remove {
+  position: absolute;
+  right: 0.5rem;
+  top: 2.35rem;
+}
+.btn.default .add svg,
+.btn.default .remove svg {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.btn.non-selectable {
+  background-color: blue;
+  color: white;
+  font-family: Arial;
+  font-weight: bold;
+  text-decoration: none;
+}
+.btn.non-selectable .capital {
+  color: tan;
+  padding-left: 1em;
+}
+.btn.hidden {
+  background: transparent;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+}
+.half .btn.hidden svg {
+  height: 4rem;
+  width: 4rem;
+}
+.left .btn.hidden svg {
+  height: 3rem;
+  width: 3rem;
+}
+
+.return {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.return svg {
+  fill: white;
+  height: 2rem;
+  padding: 1rem;      
+  width: 2rem;
+}
+
+.item {
+  border-bottom: 3px solid silver;
+  font-family: Arial;
+  padding: 0.5rem;
+}
+.item:not(.first) {
+  padding: 1rem 0.5rem 0.75rem 0.5rem;      
+}
+.item .title {
+  color: blue;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+  text-transform: uppercase;
+}
+.item .subtitle {
+  font-weight: bold;
+}
+.item .subtitle.caution {
+  color: red;
+}
+.item .subtitle:not(.first) {
+  margin-top: 0.5rem;
+}
+
+.item .description:not(.list):not(.image) {
+  padding-left: 1.5rem;
+}
+.item .description:not(:first-of-type) {
+  padding-top: 0.5rem;
+}
+
+.item .description.image a.svg {
+  display: inline-block;
+  margin-left: 14%;
+  position: relative;
+  width: 70%;
+}
+.item .description.image a.svg:after {
+  content: ""; 
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left:0;
+}
+.item .description.image object {
+  width: 100%;
+}
+
+/* Individual Effects */
+
+/* Jelena */
+.effect-jelena::after {
+	border: 2px solid rgba(111,148,182,0.5);
+}
+
+.effect-jelena.click::after {
+	-webkit-animation: anim-effect-jelena 0.3s ease-out forwards;
+	animation: anim-effect-jelena 0.3s ease-out forwards;
+}
+
+@-webkit-keyframes anim-effect-jelena {
+	0% {
+		opacity: 1;
+		-webkit-transform: scale3d(0.5, 0.5, 1);
+		transform: scale3d(0.5, 0.5, 1);
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: scale3d(1.2, 1.2, 1);
+		transform: scale3d(1.2, 1.2, 1);
+	}
+}
+
+@keyframes anim-effect-jelena {
+	0% {
+		opacity: 1;
+		-webkit-transform: scale3d(0.5, 0.5, 1);
+		transform: scale3d(0.5, 0.5, 1);
+	}
+	to {
+		opacity: 0;
+		-webkit-transform: scale3d(1.2, 1.2, 1);
+		transform: scale3d(1.2, 1.2, 1);
+	}
+}

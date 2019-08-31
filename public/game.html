@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Memory Match</title>
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
+  <meta name="theme-color" content="#2196f3"/>
+
+  <link href="styles.css" rel="stylesheet" type="text/css" />
+  <style>
+    body {
+      --border-gap: 2px;
+      --margin-gap: 5px;
+
+      --card-width: 50px;
+      --card-height: 50px;
+
+      --card-background-color: palegoldenrod;
+      --card-border-color: mediumvioletred;
+    }
+
+    .game-area {
+      background-color: white;
+      height: calc(100% - 4rem);
+      margin-top: 4rem;
+      padding-top: 2rem;
+      position: relative;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .scene {
+      display: inline-block;
+      margin: var(--margin-gap);
+      perspective: calc(var(--card-width) * 3);
+      text-align: initial;
+
+      height: var(--card-height);
+      width: var(--card-width);
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      backface-visibility: hidden;
+    }
+
+    .card-face--back {
+      background-color: var(--card-background-color);
+      border: var(--border-gap) solid var(--card-border-color);
+      border-radius: 5px;
+      box-sizing: border-box;
+      display: inline-block;
+      overflow: hidden;
+      transform: rotateY( 180deg );
+    }
+    .card-face--back .icon {
+      height: calc(var(--card-width) - calc(2 * var(--border-gap)));
+      margin-top: calc(var(--card-height) - var(--card-width));
+      width: calc(var(--card-width) - calc(2 * var(--border-gap)));
+    }
+
+    .card-face--front {
+      background-color: tan;
+      border: 2px solid maroon;
+      border-radius: 5px;
+      box-sizing: border-box;
+      display: inline-block;
+      overflow: hidden;
+      padding: 5px;
+    }
+    .card-face--front .icon-small {
+      height: calc(calc(var(--card-width) - calc(2 * var(--border-gap))) - 10px);
+      margin-top: calc(calc(var(--card-height) - var(--card-width)) / 2);
+      width: calc(calc(var(--card-width) - calc(2 * var(--border-gap))) - 10px);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="return" href="/">
+      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        width="459px" height="459px" viewBox="0 0 459 459" xml:space="preserve">
+        <g id="reply">
+          <path d="M178.5,140.25v-102L0,216.75l178.5,178.5V290.7c127.5,0,216.75,40.8,280.5,130.05C433.5,293.25,357,165.75,178.5,140.25z" />
+        </g>
+      </svg>     
+    </a>
+    <div><br/>Memory Match</div>
+  </header>
+
+  <style>
+    .cls-1,.cls-3,.cls-4{
+      fill: none;
+    }
+    .cls-1,.cls-2,.cls-3,.cls-4{
+      stroke :#000;
+      stroke-miterlimit: 10;
+    }
+    .cls-2, .alternate .cls-3{
+      fill: #fff;
+    }
+    .cls-2,.cls-3,.cls-4{
+      stroke-linecap: round;
+      stroke-width: 3px;
+    }
+
+    .alternate .cls-2{
+      stroke-width: 2px;
+    }
+  </style>
+  <svg width="0" height="0" class="hidden">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 1">
+      <title>Asset 1</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_1" data-name="1">
+            <circle class="cls-2" cx="103.5" cy="57.5" r="25"/>
+            <line class="cls-3" x1="103.5" y1="82.5" x2="103.5" y2="148.5"/>
+            <line class="cls-3" x1="103.5" y1="145.5" x2="69.5" y2="195.5"/>
+            <line class="cls-3" x1="103.5" y1="145.5" x2="137.5" y2="195.5"/>
+            <line class="cls-3" x1="103.5" y1="107.5" x2="55.5" y2="59.5"/>
+            <line class="cls-3" x1="104.5" y1="106.5" x2="152.5" y2="58.5"/>
+          </g>
+        </g>
+      </g>      
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 2">
+      <title>Asset 2</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_2" data-name="2">
+            <circle class="cls-2" cx="122.13" cy="64.68" r="25" transform="translate(-15.23 49.44) rotate(-21.58)" />
+            <line class="cls-3" x1="131.32" y1="87.92" x2="155.59" y2="149.3" />
+            <line class="cls-3" x1="154.49" y1="146.51" x2="141.25" y2="205.51" />
+            <line class="cls-3" x1="154.49" y1="146.51" x2="204.49" y2="180.5" />
+            <line class="cls-3" x1="140.51" y1="111.17" x2="78.22" y2="84.19" />
+            <line class="cls-3" x1="141.07" y1="109.87" x2="168.06" y2="47.59" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 208.25" id="Asset 3">
+      <title>Asset 3</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_3" data-name="3">
+            <circle class="cls-2" cx="116.52" cy="177.52" r="25" transform="translate(-86.7 115.93) rotate(-39.86)" />
+            <line class="cls-3" x1="100.49" y1="158.33" x2="58.19" y2="107.67" />
+            <line class="cls-3" x1="60.12" y1="109.97" x2="1.97" y2="93.38" />
+            <line class="cls-3" x1="60.12" y1="109.97" x2="54.17" y2="49.8" />
+            <line class="cls-3" x1="84.47" y1="139.14" x2="78.39" y2="206.75" />
+            <line class="cls-3" x1="85.88" y1="139.26" x2="133.5" y2="92.5" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 4">
+      <title>Asset 4</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_4" data-name="4">
+            <circle class="cls-2" cx="99" cy="177.5" r="25" />
+            <line class="cls-3" x1="99" y1="152.5" x2="99" y2="86.5" />
+            <line class="cls-3" x1="99" y1="89.5" x2="65" y2="39.5" />
+            <line class="cls-3" x1="99" y1="89.5" x2="133" y2="39.5" />
+            <polyline class="cls-3" points="99 127.5 53.56 172.94 53 205.5" />
+            <polyline class="cls-3" points="100 128.5 144.44 172.94 145 205.5" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208 207.5" id="Asset 5">
+      <title>Asset 5</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_5" data-name="5">
+            <circle class="cls-2" cx="151.5" cy="74" r="25" />
+            <line class="cls-3" x1="151.5" y1="99" x2="151.5" y2="165" />
+            <line class="cls-3" x1="151.5" y1="165" x2="204.5" y2="204" />
+            <line class="cls-3" x1="151.5" y1="162" x2="205.5" y2="178" />
+            <line class="cls-3" x1="151.5" y1="124" x2="204.5" y2="116" />
+            <line class="cls-3" x1="152.5" y1="123" x2="206.5" y2="82" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 209 207.5" id="Asset 6">
+      <title>Asset 6</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_6" data-name="6">
+            <circle class="cls-2" cx="56.5" cy="73" r="25" />
+            <line class="cls-3" x1="56.5" y1="98" x2="56.5" y2="164" />
+            <line class="cls-3" x1="56.5" y1="164" x2="3.5" y2="203" />
+            <line class="cls-3" x1="56.5" y1="161" x2="2.5" y2="177" />
+            <line class="cls-3" x1="56.5" y1="123" x2="3.5" y2="115" />
+            <line class="cls-3" x1="55.5" y1="122" x2="1.5" y2="81" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 7">
+      <title>Asset 7</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_7" data-name="7">
+            <circle class="cls-2" cx="110.5" cy="179" r="25" />
+            <line class="cls-3" x1="110.5" y1="154" x2="110.5" y2="88" />
+            <line class="cls-3" x1="110.5" y1="91" x2="76.5" y2="41" />
+            <line class="cls-3" x1="110.5" y1="91" x2="144.5" y2="41" />
+            <line class="cls-3" x1="110.5" y1="129" x2="62.5" y2="177" />
+            <line class="cls-3" x1="111.5" y1="130" x2="159.5" y2="178" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 8">
+      <title>Asset 8</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_8" data-name="8">
+            <circle class="cls-2" cx="79.99" cy="64.54" r="25" transform="translate(-19.45 38.55) rotate(-24.25)" />
+            <line class="cls-3" x1="90.25" y1="87.33" x2="117.36" y2="147.51" />
+            <line class="cls-3" x1="116.13" y1="144.78" x2="105.67" y2="204.33" />
+            <line class="cls-3" x1="116.13" y1="144.78" x2="167.67" y2="176.4" />
+            <line class="cls-3" x1="100.52" y1="110.13" x2="37.04" y2="86.08" />
+            <line class="cls-3" x1="101.02" y1="108.81" x2="125.07" y2="45.33" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 9">
+      <title>Asset 9</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_9" data-name="9">
+            <circle class="cls-2" cx="94.5" cy="59.5" r="25" />
+            <line class="cls-3" x1="94.5" y1="84.5" x2="94.5" y2="150.5" />
+            <line class="cls-3" x1="94.5" y1="147.5" x2="60.5" y2="197.5" />
+            <line class="cls-3" x1="94.5" y1="147.5" x2="128.5" y2="197.5" />
+            <polyline class="cls-3" points="94.5 84.5 134.5 128.5 140.5 115.5" />
+            <polyline class="cls-3" points="94.5 84.5 54.5 128.5 48.5 115.5" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 10">
+      <title>Asset 10</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_9" data-name="9">
+            <circle class="cls-2" cx="148" cy="96.5" r="25" transform="translate(-18.75 38.11) rotate(-13.81)" />
+            <path class="cls-3" d="M165,114.5q13.49,45.43-3,91" />
+            <polyline class="cls-3" points="162 205.5 117 181.5 84 204.5 72 205.5" />
+            <polyline class="cls-3" points="165 116.5 141 153.5 102 153.5" />
+            <polyline class="cls-3" points="165 115.5 197 153.5 197 192.5" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 11">
+      <title>Asset 11</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_1" data-name="1">
+            <circle class="cls-2" cx="109.5" cy="71.5" r="25" />
+            <line class="cls-3" x1="109.5" y1="96.5" x2="109.5" y2="205.5" />
+            <polyline class="cls-3" points="109.5 159.5 128.5 171.5 134.5 205.5" />
+            <polyline class="cls-3" points="109.5 96.5 84.5 119.5 110.5 137.5" />
+            <polyline class="cls-3" points="109.5 96.5 135.5 119.5 110.5 137.5" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 12">
+      <title>Asset 12</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_9" data-name="9">
+            <circle class="cls-2" cx="97.2" cy="60.75" r="25" transform="translate(-11.69 24.95) rotate(-13.81)" />
+            <path class="cls-3" d="M114,79.5c23,17,23,44.62,12,75" />
+            <polyline class="cls-3" points="125 154.5 75 128.5 88 205.5 77 205.5" />
+            <polyline class="cls-3" points="114 81.5 93 128.5 73.78 126.3 67 135.5" />
+          </g>
+          <rect x="100" y="157.5" width="62" height="49.5" rx="9.67" ry="9.67" />
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 13">
+      <title>Asset 13</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1" class="alternate">
+          <path class="cls-2"
+            d="M103.4,118C128,61.42,142,92.86,161,77.77c-1.28,12.39-4.69,25.81-13.42,34-2.07,6.82-5.11,7.33-8.39,6.29-1.78,5.86-5.08,6.08-8.39,6.29-2.51,4.6-5.07,6.15-7.83,3.77-2.32,2.86-4.93,2.77-7.83,0-2.11,2.13-4.56.6-7.27-3.77C106.22,124.1,104.76,121.56,103.4,118Z" />
+          <path class="cls-2"
+            d="M103.6,118C79,61.42,65,92.86,46,77.77c1.28,12.39,4.69,25.81,13.42,34,2.07,6.82,5.11,7.33,8.39,6.29,1.78,5.86,5.08,6.08,8.39,6.29,2.51,4.6,5.07,6.15,7.83,3.77,2.32,2.86,4.93,2.77,7.83,0,2.11,2.13,4.56.6,7.27-3.77C100.78,124.1,102.24,121.56,103.6,118Z" />
+          <g id="_1" data-name="1">
+            <circle class="cls-3" cx="103.5" cy="65" r="25" />
+            <line class="cls-4" x1="103.5" y1="90" x2="103.5" y2="156" />
+            <line class="cls-4" x1="103.5" y1="153" x2="69.5" y2="203" />
+            <line class="cls-4" x1="103.5" y1="153" x2="137.5" y2="203" />
+            <polyline class="cls-4" points="103.5 90 74.5 121 68.5 114" />
+            <polyline class="cls-4" points="103.5 90 132.5 121 137.5 114" />
+          </g>
+          <path class="cls-4" d="M68.85,123" />
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 208.5" id="Asset 14">
+      <title>Asset 14</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_1" data-name="1">
+            <circle class="cls-2" cx="60" cy="153" r="25" />
+            <line class="cls-3" x1="85" y1="153" x2="151" y2="153" />
+            <polyline class="cls-3" points="151 153 141 207 174 207" />
+            <polyline class="cls-3" points="151 153 151 205 177 205" />
+            <line class="cls-3" x1="85" y1="153" x2="99" y2="207" />
+          </g>
+          <line class="cls-3" x1="85" y1="207" x2="85" y2="153" />
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5" id="Asset 15">
+      <title>Asset 15</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_1" data-name="1">
+            <circle class="cls-2" cx="96.5" cy="64" r="25" />
+            <line class="cls-3" x1="96.5" y1="89" x2="96.5" y2="155" />
+            <line class="cls-3" x1="96.5" y1="152" x2="62.5" y2="202" />
+            <line class="cls-3" x1="96.5" y1="152" x2="130.5" y2="202" />
+            <polyline class="cls-3" points="96.5 90 73.93 116.16 92.5 137" />
+            <line class="cls-3" x1="96.5" y1="90" x2="134.5" y2="121" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.5 209.5" id="Asset 16">
+      <title>Asset 16</title>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+          <g id="_1" data-name="1">
+            <circle class="cls-2" cx="166" cy="72" r="25" />
+            <path class="cls-3"
+              d="M144,84c-11.25,13.84-24.74,26.19-13.56,56.3a88.07,88.07,0,0,1,3.86,48.7c-2.92,13.91-7.48,17.71-13.29,19" />
+            <line class="cls-3" x1="135" y1="156" x2="149" y2="206" />
+            <path class="cls-3" d="M207,97c-32,17-55.52,13.67-63-13" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol viewBox="0 -35 512.001 512" xmlns="http://www.w3.org/2000/svg" id="cards">
+      <path d="M244.922 434.219L95.285 284.586c-11.633-11.633-11.633-30.496 0-42.129L311.515 26.23c11.633-11.632 30.493-11.632 42.126 0l149.636 149.633c11.633 11.633 11.633 30.496 0 42.13l-216.23 216.226c-11.633 11.633-30.492 11.633-42.125 0zm0 0" fill="#fcf2d0"></path>
+      <path d="M304.383 33.36L95.285 242.456c-11.633 11.633-11.633 30.496 0 42.125l149.637 149.637c11.633 11.633 30.492 11.633 42.125 0l59.633-59.633c-74.989-73.797-59.004-247.113-42.297-341.227zm0 0" fill="#f6e3a3"></path>
+      <path d="M265.984 390.176a21.993 21.993 0 0 1-15.66-6.485L145.816 279.18c-8.636-8.633-8.636-22.684 0-31.317L316.918 76.758a22.01 22.01 0 0 1 15.66-6.485 22.017 22.017 0 0 1 15.66 6.485l104.508 104.508a22 22 0 0 1 6.484 15.66c0 5.918-2.3 11.48-6.484 15.66L281.645 383.687a22.005 22.005 0 0 1-15.66 6.489zm66.594-304.899a7.12 7.12 0 0 0-5.055 2.09L156.422 258.47c-2.785 2.785-2.785 7.32 0 10.105L260.93 373.082a7.148 7.148 0 0 0 10.105 0L442.141 201.98c2.785-2.785 2.785-7.32 0-10.105L337.629 87.367a7.112 7.112 0 0 0-5.05-2.09zm0 0"
+        fill="#4e5660"></path>
+      <path d="M273.992 192.352c10.168-10.168 26.653-10.168 36.82 0 5.165 5.164 7.7 11.953 7.618 18.722 6.765-.082 13.558 2.453 18.722 7.617 10.168 10.168 10.168 26.653 0 36.82-13.351 13.356-42.882 16.434-62.937 7.794a15.34 15.34 0 0 1-8.016-8.016c-8.64-20.055-5.562-49.582 7.793-62.937zm0 0"
+        fill="#4e5660"></path>
+      <path d="M290.414 184.82c-5.984.457-11.844 2.953-16.422 7.532-13.355 13.355-16.433 42.882-7.793 62.937a15.34 15.34 0 0 0 8.016 8.016c6.976 3.007 15.101 4.59 23.289 4.82-4.89-26.625-6.942-55.016-7.09-83.305zm0 0" fill="#383c43"></path>
+      <path d="M321.363 36.086a7.936 7.936 0 0 1 11.215 0 7.91 7.91 0 0 1 2.32 5.703 7.908 7.908 0 0 1 5.704 2.324c3.097 3.094 3.097 8.117 0 11.215-4.067 4.067-13.063 5.004-19.172 2.375a4.682 4.682 0 0 1-2.442-2.445c-2.633-6.11-1.691-15.102 2.375-19.172zm0 0"
+        fill="#4e5660"></path>
+      <path d="M277.2 424.363a7.94 7.94 0 0 1-11.22 0 7.927 7.927 0 0 1-2.32-5.703 7.927 7.927 0 0 1-5.703-2.32 7.933 7.933 0 0 1 0-11.219c4.07-4.066 13.063-5.004 19.172-2.371a4.635 4.635 0 0 1 2.441 2.441c2.633 6.106 1.696 15.102-2.37 19.172zm0 0"
+        fill="#383c43"></path>
+      <path d="M241.402 365.371H29.79C13.336 365.371 0 352.035 0 335.582V29.789C0 13.336 13.336 0 29.79 0h211.612c16.453 0 29.79 13.336 29.79 29.79v305.792c0 16.453-13.337 29.79-29.79 29.79zm0 0" fill="#fcf2d0"></path>
+      <path d="M29.79 0C13.335 0 0 13.336 0 29.79v305.792c0 16.45 13.336 29.79 29.79 29.79h122.773C81.66 294.136 68.48 113.761 91.523 0zm0 0" fill="#f6e3a3"></path>
+      <g fill="#e26e7e">
+        <path d="M209.496 325.82h-147.8c-12.212 0-22.145-9.937-22.145-22.148V61.699c0-12.21 9.933-22.148 22.144-22.148h147.797c12.211 0 22.149 9.937 22.149 22.148v241.973c0 12.21-9.934 22.148-22.145 22.148zM61.696 54.55c-3.938 0-7.145 3.208-7.145 7.15v241.972c0 3.941 3.207 7.148 7.144 7.148h147.797c3.942 0 7.149-3.207 7.149-7.148V61.699c0-3.941-3.207-7.148-7.149-7.148zm0 0"></path>
+        <path d="M126.879 136.07l-25.973 41.106a10.314 10.314 0 0 0 0 11.015l25.973 41.11c4.047 6.406 13.387 6.406 17.433 0l25.973-41.11a10.314 10.314 0 0 0 0-11.015l-25.972-41.106c-4.047-6.406-13.387-6.406-17.434 0zM24.27 16.133l-9.74 15.414a3.864 3.864 0 0 0 0 4.129l9.74 15.414c1.52 2.402 5.02 2.402 6.539 0l9.738-15.414a3.864 3.864 0 0 0 0-4.13l-9.738-15.413c-1.52-2.403-5.02-2.403-6.54 0zm222.652 333.105l9.738-15.414a3.871 3.871 0 0 0 0-4.133l-9.738-15.414c-1.52-2.398-5.02-2.398-6.54 0l-9.737 15.414a3.871 3.871 0 0 0 0 4.133l9.738 15.414c1.52 2.399 5.02 2.399 6.539 0zm0 0"></path>
+      </g>
+      <path d="M101.77 111.094c0-8.696-8.852-15.75-19.778-15.75-10.922 0-19.777 7.054-19.777 15.75 0 8.699 8.855 15.75 19.777 15.75 10.926 0 19.778-7.051 19.778-15.75zm107.207 0c0-8.696-8.856-15.75-19.778-15.75s-19.777 7.054-19.777 15.75c0 8.699 8.855 15.75 19.777 15.75s19.778-7.051 19.778-15.75zm0 0"
+        fill="#eda1ab"></path>
+      <path d="M93.52 102.883c-4.141 0-7.5-3.36-7.5-7.5v-6.985c0-4.14 3.359-7.5 7.5-7.5s7.5 3.36 7.5 7.5v6.985c0 4.14-3.36 7.5-7.5 7.5zm84.152 0c-4.14 0-7.5-3.36-7.5-7.5v-6.985c0-4.14 3.36-7.5 7.5-7.5s7.5 3.36 7.5 7.5v6.985c0 4.14-3.36 7.5-7.5 7.5zm-42.074 5.363a22.227 22.227 0 0 1-16.75-7.625 7.504 7.504 0 0 1 .726-10.582 7.497 7.497 0 0 1 10.582.727c1.375 1.578 3.356 2.48 5.438 2.48s4.066-.902 5.441-2.48a7.497 7.497 0 0 1 10.582-.727 7.504 7.504 0 0 1 .727 10.582 22.212 22.212 0 0 1-16.746 7.625zm0 0"
+        fill="#4e5660"></path>
+      <path d="M166.223 287.25c-1.918 0-3.84-.73-5.301-2.195a7.497 7.497 0 0 1 0-10.606l8.16-8.164a7.497 7.497 0 0 1 10.606 0 7.497 7.497 0 0 1 0 10.606l-8.16 8.164a7.473 7.473 0 0 1-5.305 2.195zm230.273-80.078a7.5 7.5 0 0 1-7.5-7.5v-8.82a7.5 7.5 0 0 1 7.5-7.5 7.5 7.5 0 0 1 7.5 7.5v8.82a7.5 7.5 0 0 1-7.5 7.5zm0 0"
+        fill="#f6e3a3"></path>
+      <path d="M297.504 319.977a7.5 7.5 0 0 1-7.5-7.5V298.07a7.5 7.5 0 1 1 15 0v14.407c0 4.144-3.356 7.5-7.5 7.5zm0 0" fill="#fcf2d0"></path>
+    </symbol>
+  </svg>
+
+  <div id="game-area" class="game-area"></div>
+
+  <script src="./game.js"></script>
+  <script src="./storage.js"></script>
+  <script>
+    const storage = new Storage();
+    game.init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207.5 207.5">
+  <defs>
+    <style>
+      .cls-1,.cls-3{fill:none;}.cls-1,.cls-2,.cls-3{stroke:#000;stroke-miterlimit:10;}.cls-2{fill:#fff;}.cls-2,.cls-3{stroke-linecap:round;stroke-width:3px;}
+    </style>
+  </defs>
+  <title>Asset 10</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g id="_9" data-name="9">
+        <circle class="cls-2" cx="148" cy="96.5" r="25" transform="translate(-18.75 38.11) rotate(-13.81)" />
+        <path class="cls-3" d="M165,114.5q13.49,45.43-3,91" />
+        <polyline class="cls-3" points="162 205.5 117 181.5 84 204.5 72 205.5" />
+        <polyline class="cls-3" points="165 116.5 141 153.5 102 153.5" />
+        <polyline class="cls-3" points="165 115.5 197 153.5 197 192.5" />
+      </g>
+    </g>
+  </g>
+</svg>
